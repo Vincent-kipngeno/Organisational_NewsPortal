@@ -11,7 +11,7 @@ public class News {
     private long createdAt;
     private String formattedCreatedAt;
 
-    public News(int id, String content, String author, long createdAt) {
+    public News(String content, String author) {
         this.id = id;
         this.content = content;
         this.author = author;
@@ -46,7 +46,7 @@ public class News {
         this.id = id;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt() {
         this.createdAt = System.currentTimeMillis();
     }
 
