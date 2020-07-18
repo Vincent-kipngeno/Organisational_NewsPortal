@@ -5,14 +5,13 @@ import java.util.Date;
 import java.util.Objects;
 
 public class News {
-    private int id;
-    private String content;
-    private String author;
-    private long createdAt;
-    private String formattedCreatedAt;
+    public int id;
+    public String content;
+    public String author;
+    public long createdAt;
+    public String formattedCreatedAt;
 
     public News(String content, String author) {
-        this.id = id;
         this.content = content;
         this.author = author;
         this.createdAt = System.currentTimeMillis();
