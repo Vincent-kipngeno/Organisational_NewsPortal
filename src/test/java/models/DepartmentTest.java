@@ -58,6 +58,20 @@ public class DepartmentTest {
         assertEquals(1, department.getNoOfEmployees());
     }
 
+    @Test
+    public void setId_idCanBeSetCorrectly() {
+        Department department = setupDepartment();
+        department.setId(1);
+        assertEquals(1, department.getId());
+    }
+
+    @Test
+    public void equal_departmentsWithSameNameAndDescriptionAreEqual() {
+        Department department = setupDepartment();
+        Department secondDepartment = setupDepartment();
+        assertEquals(true, department.equals(secondDepartment));
+    }
+
     //helpers
     public Department setupDepartment() {
         return new Department("Science", "Science subjects", 5);
