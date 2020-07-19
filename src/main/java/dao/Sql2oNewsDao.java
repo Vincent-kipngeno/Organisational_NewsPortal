@@ -33,6 +33,7 @@ public class Sql2oNewsDao implements NewsDao {
         String sql = "SELECT * FROM news;";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
+                    .throwOnMappingFailure(false)
                     .executeAndFetch(News.class);
         }
     }
@@ -43,6 +44,7 @@ public class Sql2oNewsDao implements NewsDao {
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
                     .addParameter("id", id)
+                    .throwOnMappingFailure(false)
                     .executeAndFetchFirst(News.class);
         }
     }
