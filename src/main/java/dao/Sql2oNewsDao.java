@@ -46,4 +46,34 @@ public class Sql2oNewsDao implements NewsDao {
                     .executeAndFetchFirst(News.class);
         }
     }
+
+    @Override
+    public void update(int id, String content, String author) {
+        String sql = "UPDATE news SET (content, author) = (:content, :author) ";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("content", content)
+                    .addParameter("author", author)
+                    .executeUpdate();
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE FROM news WHERE id = :id ;";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        }
+    }
+
+    @Override
+    public void clearAll() {
+        String sql = "DELETE FROM news;";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .executeUpdate();
+        }
+    }
 }
