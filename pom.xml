@@ -87,7 +87,7 @@
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>
                     <!-- Change this to YOUR application name! -->
-                    <appName>news-portal-api</appName>
+                    <appName>news-api-portal</appName>
                     <processTypes>
                         <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
                     </processTypes>
@@ -96,4 +96,4 @@
         </plugins>
     </build>
 </project>
-        <!--postgresql-polished-15277  //   postgresql-rugged-77140  -->
+        <!--postgresql-corrugated-74552  //   postgresql-concave-83486  -->

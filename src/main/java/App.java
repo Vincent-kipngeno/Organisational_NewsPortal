@@ -14,7 +14,17 @@ import java.util.Map;
 import static spark.Spark.*;
 
 public class App {
-    public static void main (String[] args) {
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
+    public static void main(String[] args) {
+
+        port(getHerokuAssignedPort());
+        staticFileLocation("/public");
         Sql2oDepartmentNewsDao departmentNewsDao;
         Sql2oNewsDao newsDao;
         Sql2oUserDao userDao;
@@ -22,8 +32,10 @@ public class App {
         Connection conn;
         Gson gson = new Gson();
 
-        String connectionString = "jdbc:postgresql://localhost:5432/news_portal";
-        Sql2o sql2o = new Sql2o(connectionString, "vincent", "Taptet#2001");
+        //String connectionString = "jdbc:postgresql://localhost:5432/news_portal";
+        //Sql2o sql2o = new Sql2o(connectionString, "vincent", "Taptet#2001");
+        String connectionString = "jdbc:postgresql://ec2-54-236-146-234.compute-1.amazonaws.com:5432/dafjrlb70vohp0?sslmode=require";
+        Sql2o sql2o = new Sql2o(connectionString, "mlclffkfpoejwn", "43522bff0832691175a74becb42add4efb1ea951660355ee9cc3250dbc7c77df");
 
         departmentDao = new Sql2oDepartmentDao(sql2o);
         newsDao = new Sql2oNewsDao(sql2o);
