@@ -43,6 +43,8 @@ public class App {
         userDao = new Sql2oUserDao(sql2o);
 
         conn = sql2o.open();
+        //get: view all departments
+        get("/", "application/json", (req, res) -> gson.toJson(departmentDao.getAll()));
 
         //Post: Create new Department
         post("/departments/new", "application/json", (req, res) -> {
