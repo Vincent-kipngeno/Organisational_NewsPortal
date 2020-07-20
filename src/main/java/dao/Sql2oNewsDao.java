@@ -16,10 +16,11 @@ public class Sql2oNewsDao implements NewsDao {
 
     @Override
     public void add(News news) {
-        String sql = "INSERT INTO news (content, author, createdat) VALUES (:content, :author, :createdAt);";
+        String sql = "INSERT INTO news (content, author, createdat, type) VALUES (:content, :author, :createdAt, :DATABASETYPE);";
         try (Connection conn = sql2o.open()) {
             int id = (int) conn.createQuery(sql, true)
                     .bind(news)
+                    .addParameter("DATABASETYPE", News.getDATABASETYPE())
                     .executeUpdate()
                     .getKey();
             news.setId(id);
@@ -30,9 +31,10 @@ public class Sql2oNewsDao implements NewsDao {
 
     @Override
     public List<News> getAll() {
-        String sql = "SELECT * FROM news;";
+        String sql = "SELECT * FROM news WHERE type = :type;";
         try (Connection con = sql2o.open()) {
             return con.createQuery(sql)
+                    .addParameter("type", News.getDATABASETYPE())
                     .throwOnMappingFailure(false)
                     .executeAndFetch(News.class);
         }
@@ -51,11 +53,12 @@ public class Sql2oNewsDao implements NewsDao {
 
     @Override
     public void update(int id, String content, String author) {
-        String sql = "UPDATE news SET (content, author) = (:content, :author) ";
+        String sql = "UPDATE news SET (content, author) = (:content, :author) WHERE id = :id; ";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("content", content)
                     .addParameter("author", author)
+                    .addParameter("id", id)
                     .executeUpdate();
         }
     }

@@ -28,6 +28,8 @@ public class Sql2oDepartmentDaoTest {
     public void tearDown() throws Exception {
         System.out.println("Clearing database");
         departmentDao.clearAll();
+        userDao.clearAll();
+        departmentDao.clearAll();
     }
 
     @AfterClass

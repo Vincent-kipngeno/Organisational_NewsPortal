@@ -94,6 +94,7 @@ public class Sql2oDepartmentDao implements DepartmentDao {
         try (Connection conn = sql2o.open()){
             return conn.createQuery(sql)
                     .addParameter("departmentId", departmentId)
+                    .throwOnMappingFailure(false)
                     .executeAndFetch(DepartmentNews.class);
         }
     }
