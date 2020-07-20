@@ -1,6 +1,6 @@
 package dao;
 
-import models.Department;
+import models.*;
 
 import java.util.List;
 
@@ -12,6 +12,8 @@ public interface DepartmentDao {
     //read
     List<Department> getAll();
     Department findById(int id);
+    List<User> getAllUsersByDepartment(int departmentId);
+    List<DepartmentNews> getAllNewsByDepartment (int departmentId);
 
     //update
     void update(int id, String name, String description, int noOfEmployees);
