@@ -90,9 +90,35 @@ public class App {
             return gson.toJson(jsonMap);
         });
         //get: view users from a specific department and news related to them
-        //get("departments/:id/users/news", "application/json", (req, res) -> {
-
-        //});
+        get("departments/:id/users/news", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("id"));
+            Department departmentToFind = departmentDao.findById(departmentId);
+            if (departmentToFind == null ){
+                throw new ApiException(404, String.format("No department with id: %s exists", req.params("id")));
+            } else {
+                Map<String, Object> models = new HashMap<>();
+                List<User> users = departmentDao.getAllUsersByDepartment(departmentToFind.getId());
+                List <DepartmentNews> news = departmentDao.getAllNewsByDepartment(departmentToFind.getId());
+                if (users.size() == 0) {
+                   String message = "I'm sorry, but no users are listed yet.";
+                    models.put("department", departmentToFind);
+                    models.put("message", message);
+                    models.put("news", news);
+                    return gson.toJson(models);
+                }else if (news.size() == 0) {
+                    String message = "I'm sorry, but no news are listed yet.";
+                    models.put("department", departmentToFind);
+                    models.put("users", users);
+                    models.put("message", message);
+                    return gson.toJson(models);
+                }else {
+                    models.put("department", departmentToFind);
+                    models.put("users", users);
+                    models.put("news", news);
+                    return gson.toJson(models);
+                }
+            }
+        });
         //post: create news
         post("/news/new", "application/json", (req, res) -> {
             News news = gson.fromJson(req.body(), News.class);
