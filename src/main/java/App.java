@@ -54,13 +54,13 @@ public class App {
         });
 
         //Post: Create new user
-        post("departments/:id/users/new", "application/json", (req, res) -> {
+        post("/departments/:id/users/new", "application/json", (req, res) -> {
+            User user = gson.fromJson(req.body(), User.class);
             int departmentId = Integer.parseInt(req.params("id"));
             Department departmentToFind = departmentDao.findById(departmentId);
             if (departmentToFind == null ){
                 throw new ApiException(404, String.format("No department with id: %s exists", req.params("id")));
             } else {
-                User user = gson.fromJson(req.body(), User.class);
                 user.setDepartmentId(departmentId);
                 userDao.add(user);
                 res.status(201);
@@ -90,7 +90,7 @@ public class App {
             return gson.toJson(jsonMap);
         });
         //get: view users from a specific department and news related to them
-        get("departments/:id/users/news", "application/json", (req, res) -> {
+        get("/departments/:id/users/news", "application/json", (req, res) -> {
             int departmentId = Integer.parseInt(req.params("id"));
             Department departmentToFind = departmentDao.findById(departmentId);
             if (departmentToFind == null ){
@@ -98,23 +98,17 @@ public class App {
             } else {
                 Map<String, Object> models = new HashMap<>();
                 List<User> users = departmentDao.getAllUsersByDepartment(departmentToFind.getId());
-                List <DepartmentNews> news = departmentDao.getAllNewsByDepartment(departmentToFind.getId());
+                String news = String.format("/departments/%s/news", req.params("id"));
                 if (users.size() == 0) {
                    String message = "I'm sorry, but no users are listed yet.";
                     models.put("department", departmentToFind);
                     models.put("message", message);
-                    models.put("news", news);
-                    return gson.toJson(models);
-                }else if (news.size() == 0) {
-                    String message = "I'm sorry, but no news are listed yet.";
-                    models.put("department", departmentToFind);
-                    models.put("users", users);
-                    models.put("message", message);
+                    models.put("departmentNews", news);
                     return gson.toJson(models);
                 }else {
                     models.put("department", departmentToFind);
-                    models.put("users", users);
-                    models.put("news", news);
+                    models.put("departmentUsers", users);
+                    models.put("departmentNews", news);
                     return gson.toJson(models);
                 }
             }
@@ -139,7 +133,7 @@ public class App {
         });
 
         //post: create department news
-        post("departments/:id/news/new", "application/json", (req, res) -> {
+        post("/departments/:id/news/new", "application/json", (req, res) -> {
             int departmentId = Integer.parseInt(req.params("id"));
             Department departmentToFind = departmentDao.findById(departmentId);
             if (departmentToFind == null ){
@@ -152,6 +146,28 @@ public class App {
                 departmentNewsDao.add(news);
                 res.status(201);
                 return gson.toJson(news);
+            }
+        });
+
+        //get: view news of a particular department
+        get("/departments/:id/news", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("id"));
+            Department departmentToFind = departmentDao.findById(departmentId);
+            if (departmentToFind == null ){
+                throw new ApiException(404, String.format("No department with id: %s exists", req.params("id")));
+            } else {
+                Map<String, Object> models = new HashMap<>();
+                List <DepartmentNews> news = departmentDao.getAllNewsByDepartment(departmentToFind.getId());
+                if (news.size() == 0) {
+                    String message = "I'm sorry, but no news are listed yet.";
+                    models.put("department", departmentToFind);
+                    models.put("message", message);
+                    return gson.toJson(models);
+                }else {
+                    models.put("department", departmentToFind);
+                    models.put("departmentNews", news);
+                    return gson.toJson(models);
+                }
             }
         });
 
