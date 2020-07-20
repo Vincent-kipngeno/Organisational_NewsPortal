@@ -14,6 +14,10 @@ public class User {
         this.departmentId = departmentId;
     }
 
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public int getId() {
         return id;
     }
