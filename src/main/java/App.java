@@ -90,15 +90,44 @@ public class App {
             return gson.toJson(jsonMap);
         });
         //get: view users from a specific department and news related to them
-        get("departments/:id/users/news", "application/json", (req, res) -> {
+        //get("departments/:id/users/news", "application/json", (req, res) -> {
 
-        });
+        //});
         //post: create news
+        post("/news/new", "application/json", (req, res) -> {
+            News news = gson.fromJson(req.body(), News.class);
+            news.setCreatedAt();
+            news.setFormattedCreatedAt();
+            newsDao.add(news);
+            res.status(201);
+            return gson.toJson(news);
+        });
 
         //get: view all general news
+        get("/news", "application/json", (req, res) -> {
+            if (newsDao.getAll().size() == 0) {
+                return "{\"message\":\"I'm sorry, but no news are listed yet.\"}";
+            } else{
+                return gson.toJson(newsDao.getAll());
+            }
+        });
 
         //post: create department news
-
+        post("departments/:id/news/new", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("id"));
+            Department departmentToFind = departmentDao.findById(departmentId);
+            if (departmentToFind == null ){
+                throw new ApiException(404, String.format("No department with id: %s exists", req.params("id")));
+            } else {
+                DepartmentNews news = gson.fromJson(req.body(), DepartmentNews.class);
+                news.setDepartmentId(departmentId);
+                news.setCreatedAt();
+                news.setFormattedCreatedAt();
+                departmentNewsDao.add(news);
+                res.status(201);
+                return gson.toJson(news);
+            }
+        });
 
         //FILTERS
         exception(ApiException.class, (exception, req, res) -> {

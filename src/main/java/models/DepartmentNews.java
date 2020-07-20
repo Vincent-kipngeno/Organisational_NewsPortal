@@ -9,6 +9,10 @@ public class DepartmentNews extends News {
         this.departmentId= departmentId;
     }
 
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public int getDepartmentId() {
         return departmentId;
     }
