@@ -42,7 +42,21 @@ public class App {
 
         conn = sql2o.open();
         //get: view all departments
-        get("/", "application/json", (req, res) -> gson.toJson(departmentDao.getAll()));
+        get("/", "application/json", (req, res) ->{
+            Map<String, Object> models = new HashMap<>();
+            models.put("Create department(POST)", "/departments/new");
+            models.put("View Departments", "/departments");
+            models.put("View individual department", "/departments/:id");
+            models.put("Create new User", "/departments/:id/users/new");
+            models.put("View all users", "/users");
+            models.put("View individual user", "/users/:id");
+            models.put("View department's users and news", "/departments/:id/users/news");
+            models.put("Create general news", "/news/new");
+            models.put("View all general news", "/news");
+            models.put("Create department news", "/departments/:id/news/new");
+            models.put("View news of a department", "/departments/:id/news/new");
+            return gson.toJson(models);
+        });
 
         //Post: Create new Department
         post("/departments/new", "application/json", (req, res) -> {
