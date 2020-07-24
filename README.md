@@ -16,6 +16,60 @@ This is a an api portal where department can be created and viewed. Employees ca
 * To run the app enter the command $ gradle run
 * Check the app on local host server localhost://4567
 
+## User Guide
+#### Create New Department: 
+* Method: POST:
+* Route: /departments/new
+* Sample Data: 
+    {
+        "name": "Science",
+        "description": "Science Subjects"
+    }
+#### Create New User: 
+* Method: POST:
+* Route: /departments/:id/users/new
+* Sample Data: 
+    {
+        "name": "Kevin",
+        "role": "Teacher"
+    }
+#### Create general News: 
+* Method: POST:
+* Route: /news/new
+* Sample Data: 
+    {
+        "content": "All syllabus should be covered by september",
+        "author": "Mutali"
+    }
+#### Create department News: 
+* Method: POST:
+* Route: /departments/:id/news/new
+* Sample Data: 
+    {
+        "content": "All syllabus should be covered by september",
+        "author": "Mutali"
+    }
+#### View all departments: 
+* Method: GET:
+* Route: /departments
+#### View individual department: 
+* Method: GET:
+* Route: /departments/:id
+#### View all users:
+* Method: GET: 
+* Route: /users
+#### View individual user: 
+* Method: GET:
+* Route: /users/:id
+#### View all general news: 
+* Method: GET:
+* Route: /news
+#### View news of a particular department: 
+* Method: GET:
+* Route: /departments/:id/news
+#### View users and news of a particular department: 
+* Method: GET:
+* Route: /departments/:id/users/news
 
 ## Known Bugs
 There are no known bugs yet but if you come across one feel free to help in contributing to solve the bug or you can reach out to me.

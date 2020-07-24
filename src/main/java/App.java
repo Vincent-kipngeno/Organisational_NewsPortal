@@ -54,7 +54,7 @@ public class App {
             models.put("Create general news", "/news/new");
             models.put("View all general news", "/news");
             models.put("Create department news", "/departments/:id/news/new");
-            models.put("View news of a department", "/departments/:id/news/new");
+            models.put("View news of a department", "/departments/:id/news");
             return gson.toJson(models);
         });
 
