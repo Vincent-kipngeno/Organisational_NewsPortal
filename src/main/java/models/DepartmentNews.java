@@ -4,13 +4,22 @@ import java.util.Objects;
 
 public class DepartmentNews extends News {
     private int departmentId;
+    private final static  String DATABASETYPE = "Department news";
     public DepartmentNews(String content, String author, int departmentId) {
         super(content, author);
         this.departmentId= departmentId;
     }
 
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public int getDepartmentId() {
         return departmentId;
+    }
+
+    public static String getDATABASETYPE() {
+        return DATABASETYPE;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package dao;
 
 import models.Department;
+import models.DepartmentNews;
+import models.User;
 import org.sql2o.*;
 
 import java.util.List;
@@ -73,6 +75,27 @@ public class Sql2oDepartmentDao implements DepartmentDao {
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .executeUpdate();
+        }
+    }
+
+    @Override
+    public List<User> getAllUsersByDepartment(int departmentId) {
+        String sql = "SELECT * FROM users WHERE departmentid = :departmentId ;";
+        try (Connection conn = sql2o.open()){
+            return conn.createQuery(sql)
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(User.class);
+        }
+    }
+
+    @Override
+    public List<DepartmentNews> getAllNewsByDepartment(int departmentId) {
+        String sql = "SELECT * FROM news WHERE departmentid = :departmentId ;";
+        try (Connection conn = sql2o.open()){
+            return conn.createQuery(sql)
+                    .addParameter("departmentId", departmentId)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(DepartmentNews.class);
         }
     }
 }

@@ -10,12 +10,17 @@ public class News {
     public String author;
     public long createdAt;
     public String formattedCreatedAt;
+    private final static String DATABASETYPE = "News";
 
     public News(String content, String author) {
         this.content = content;
         this.author = author;
         this.createdAt = System.currentTimeMillis();
         setFormattedCreatedAt();
+    }
+
+    public static String getDATABASETYPE() {
+        return DATABASETYPE;
     }
 
     public int getId() {
