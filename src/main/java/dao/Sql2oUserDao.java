@@ -16,6 +16,9 @@ public class Sql2oUserDao implements  UserDao{
 
     @Override
     public void add(User user) {
+        if ((user.getName().trim().isEmpty() || user.getName() == null) || (user.getRole().trim().isEmpty() || user.getRole() == null)) {
+            throw new NullPointerException("name and role cannot be empty or null");
+        }
         String sql = "INSERT INTO users (name, role, departmentid) VALUES (:name, :role, :departmentId);";
         try (Connection conn = sql2o.open()) {
             int id = (int) conn.createQuery(sql, true)

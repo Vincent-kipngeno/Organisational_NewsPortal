@@ -16,6 +16,9 @@ public class Sql2oDepartmentDao implements DepartmentDao {
 
     @Override
     public void add(Department department) {
+        if ((department.getName().trim().isEmpty() || department.getName() == null) || (department.getDescription().trim().isEmpty() || department.getDescription() == null)) {
+            throw new NullPointerException("name and description cannot be empty or null");
+        }
         String sql = "INSERT INTO departments (name, description, noofemployees) VALUES (:name, :description, :noOfEmployees);";
         try (Connection conn = sql2o.open()) {
             int id = (int) conn.createQuery(sql, true)

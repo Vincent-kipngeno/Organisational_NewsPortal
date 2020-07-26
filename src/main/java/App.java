@@ -50,7 +50,8 @@ public class App {
             models.put("Create new User", "/departments/:id/users/new");
             models.put("View all users", "/users");
             models.put("View individual user", "/users/:id");
-            models.put("View department's users and news", "/departments/:id/users/news");
+            models.put("View" +
+                    " department's users and news", "/departments/:id/users/news");
             models.put("Create general news", "/news/new");
             models.put("View all general news", "/news");
             models.put("Create department news", "/departments/:id/news/new");
@@ -61,9 +62,15 @@ public class App {
         //Post: Create new Department
         post("/departments/new", "application/json", (req, res) -> {
             Department department = gson.fromJson(req.body(), Department.class);
-            departmentDao.add(department);
-            res.status(201);
-            return gson.toJson(department);
+            try {
+                departmentDao.add(department);
+                res.status(201);
+                return gson.toJson(department);
+            } catch (NullPointerException ex) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("message", ex);
+                return gson.toJson(model);
+            }
         });
 
         //get: view all departments
@@ -87,10 +94,16 @@ public class App {
             if (departmentToFind == null ){
                 throw new ApiException(404, String.format("No department with id: %s exists", req.params("id")));
             } else {
-                user.setDepartmentId(departmentId);
-                userDao.add(user);
-                res.status(201);
-                return gson.toJson(user);
+                try {
+                    user.setDepartmentId(departmentId);
+                    userDao.add(user);
+                    res.status(201);
+                    return gson.toJson(user);
+                } catch (NullPointerException ex) {
+                    Map<String, Object> model = new HashMap<>();
+                    model.put("message", ex);
+                    return gson.toJson(model);
+                }
             }
         });
 
@@ -144,9 +157,15 @@ public class App {
             News news = gson.fromJson(req.body(), News.class);
             news.setCreatedAt();
             news.setFormattedCreatedAt();
-            newsDao.add(news);
-            res.status(201);
-            return gson.toJson(news);
+            try {
+                newsDao.add(news);
+                res.status(201);
+                return gson.toJson(news);
+            } catch (NullPointerException ex) {
+                Map<String, Object> model = new HashMap<>();
+                model.put("message", ex);
+                return gson.toJson(model);
+            }
         });
 
         //get: view all general news
@@ -169,9 +188,15 @@ public class App {
                 news.setDepartmentId(departmentId);
                 news.setCreatedAt();
                 news.setFormattedCreatedAt();
-                departmentNewsDao.add(news);
-                res.status(201);
-                return gson.toJson(news);
+                try {
+                    departmentNewsDao.add(news);
+                    res.status(201);
+                    return gson.toJson(news);
+                } catch (NullPointerException ex) {
+                    Map<String, Object> model = new HashMap<>();
+                    model.put("message", ex);
+                    return gson.toJson(model);
+                }
             }
         });
 

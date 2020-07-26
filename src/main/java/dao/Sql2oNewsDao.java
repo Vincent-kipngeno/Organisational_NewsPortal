@@ -16,6 +16,9 @@ public class Sql2oNewsDao implements NewsDao {
 
     @Override
     public void add(News news) {
+        if ((news.getContent().trim().isEmpty() || news.getContent() == null) || (news.getAuthor().trim().isEmpty() || news.getAuthor() == null)) {
+            throw new NullPointerException("content and author cannot be empty or null");
+        }
         String sql = "INSERT INTO news (content, author, createdat, type) VALUES (:content, :author, :createdAt, :DATABASETYPE);";
         try (Connection conn = sql2o.open()) {
             int id = (int) conn.createQuery(sql, true)
